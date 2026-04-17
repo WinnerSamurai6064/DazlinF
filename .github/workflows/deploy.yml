@@ -1,0 +1,37 @@
+name: Deploy Daz-Lin to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # Triggers the build when you push to the main branch
+
+permissions:
+  contents: write # Required for the bot to push the built web files
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Web Application
+        # CRITICAL: Change "YOUR_REPO_NAME" to your actual GitHub repository name!
+        # If your repo is named "daz-lin", it should be --base-href "/daz-lin/"
+        # If deploying to a root domain (username.github.io), just use "/"
+        run: flutter build web --release --base-href "/YOUR_REPO_NAME/"
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web
