@@ -25,12 +25,12 @@ jobs:
         run: flutter pub get
 
       - name: Configure Web Platform
-        # This fixes the "project is not configured for the web" error!
+        # This exact line fixes the "not configured for the web" error
         run: flutter create . --platforms web
 
       - name: Build Web Application
-        # This fixes the base-href for your winnersamurai6064.github.io URL!
-        run: flutter build web --release --base-href "/"
+        # This is customized exactly for your repo name
+        run: flutter build web --release --base-href "/DazlinF/"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
