@@ -3,10 +3,10 @@ name: Deploy Daz-Lin to GitHub Pages
 on:
   push:
     branches:
-      - main # Triggers the build when you push to the main branch
+      - main
 
 permissions:
-  contents: write # Required for the bot to push the built web files
+  contents: write
 
 jobs:
   build-and-deploy:
@@ -24,11 +24,13 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Configure Web Platform
+        # This fixes the "project is not configured for the web" error!
+        run: flutter create . --platforms web
+
       - name: Build Web Application
-        # CRITICAL: Change "YOUR_REPO_NAME" to your actual GitHub repository name!
-        # If your repo is named "daz-lin", it should be --base-href "/daz-lin/"
-        # If deploying to a root domain (username.github.io), just use "/"
-        run: flutter build web --release --base-href "/YOUR_REPO_NAME/"
+        # This fixes the base-href for your winnersamurai6064.github.io URL!
+        run: flutter build web --release --base-href "/"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
